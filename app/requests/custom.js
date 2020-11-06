@@ -18,6 +18,7 @@ module.exports = {
     },
     unique: (field, Model) => {
         return (value, {req}) => {
+            console.log(field);
             if (req.params.id) {
                 Model.count({
                     where: {
