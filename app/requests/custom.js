@@ -17,32 +17,24 @@ module.exports = {
         return value === req.body.confirm_password;
     },
     unique: (field, Model) => {
-        return (value, {req}) => {
-            console.log(field);
-            if (req.params.id) {
-                Model.count({
-                    where: {
-                        [Op.and]: [
-                            db.where(db.col(field), value),
-                            {
-                                id: {
-                                    [Op.ne]: req.params.id
-                                },
-                            }
-                        ]
-                    }
-                }).then(data => {
-                    console.log(data === 0);
-                    return (data === 0);
-                });
-            } else {
-                Model.count({
-                    where: db.where(db.col(field), value)
-                }).then(data => {
-                    console.log(data === 0);
-                    return (data === 0);
-                });
-            }
+        return async (value, {req}) => {
+            const id = parseInt(req.params.id) || 0;
+            await Model.count({
+                where: {
+                    [Op.and]: [
+                        db.where(db.col(field), value),
+                        {
+                            id: {
+                                [Op.ne]: id
+                            },
+                        }
+                    ]
+                }
+            }).then(data => {
+                if(data !== 0){
+                    return Promise.reject();
+                }
+            });
         }
     },
 };

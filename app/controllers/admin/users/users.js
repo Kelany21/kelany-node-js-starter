@@ -1,6 +1,7 @@
 const User = require('../../../models/user');
 const responses = require('../../../../helpers/responses');
 const paginator = require('../../../../helpers/paginator');
+const translator = require('../../../../helpers/translator');
 const transformer = require('../../../transformers/user');
 const crypto = require("crypto");
 const hash = require('password-hash');
@@ -8,7 +9,7 @@ const {validationResult} = require('express-validator');
 
 module.exports = {
     store: async (req, res) => {
-        const errors = validationResult(req);
+        const errors = await validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json(responses.badRequest(errors.mapped()));
         }

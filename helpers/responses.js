@@ -1,3 +1,5 @@
+const translator = require('./translator');
+
 const statuses = {
     200: {status: 'OK', code: 200},
     400: {status: 'Bad Request', code: 400},
@@ -16,7 +18,7 @@ module.exports = {
         return {status: statuses["200"].status, code: statuses["200"].code, message: `Done delete ${itemName}`, data: item};
     },
     doneCreateItem: (item, itemName = 'item') => {
-        return {status: statuses["200"].status, code: statuses["200"].code, message: `Done create ${itemName}`, data: item};
+        return {status: statuses["200"].status, code: statuses["200"].code, message: `${translator('ar')('done_create', { itemName: itemName })}`, data: item};
     },
     doneUpdateItem: (item, itemName = 'item') => {
         return {status: statuses["200"].status, code: statuses["200"].code, message: `Done update ${itemName}`, data: item};
